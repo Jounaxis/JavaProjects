@@ -18,8 +18,6 @@ public record ProdutoRequest(
         @NotNull(message = "O preço é obrigatório")
         @DecimalMin(value = "0.99", message = "O valor mínimo deve ser 0.99")
         BigDecimal preco,
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        @JsonFormat(pattern = "dd/mm/yyyy")
         LocalDate expiracao
 ) {
 
