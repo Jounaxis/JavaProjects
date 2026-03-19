@@ -7,6 +7,9 @@ import br.com.fiap.api_rest.model.Produto;
 import br.com.fiap.api_rest.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +53,24 @@ public class ProdutoService {
                 .collect(Collectors.toList());
     }
 
+    // Page, Pageable
+    public Page<ProdutoResponse> read(Pageable pageable) {
+        return produtoRepository
+                .findAll(pageable)
+                .map(produtoMapper::produtoToResponse);
+    }
+
+    /*
+    // Exemplo usando for em vez de stream
+    public List<ProdutoRequest> read(){
+        List<Produto> produtos = produtoRepository.findAll();
+        List<ProdutoResponse> produtoResponse = new ArrayList<>();
+        for (Produto produto : produtos){
+            produtoResponse.add(produtoMapper.produtoToResponse(produto));
+        }
+        return produtoResponse;
+     }
+     */
     public Produto update(Produto produto) {
         return produtoRepository.save(produto);
     }
