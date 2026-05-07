@@ -9,7 +9,6 @@ import br.com.fiap.api_rest.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +17,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
-
 @Service
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final ProdutoMapper produtoMapper;
 
     @Autowired
-    public ProdutoService(ProdutoRepository produtoRepository,  ProdutoMapper produtoMapper) {
+    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper) {
         this.produtoRepository = produtoRepository;
         this.produtoMapper = produtoMapper;
     }
@@ -40,18 +37,10 @@ public class ProdutoService {
 
     public ProdutoResponse read(UUID id) {
         Optional<Produto> produto =  produtoRepository.findById(id);
-        if(produto.isEmpty()){
+        if (produto.isEmpty()) {
             return null;
         }
         return produtoMapper.produtoToResponse(produto.get());
-    }
-
-    public List<ProdutoResponse> read() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos
-                .stream()
-                .map(produtoMapper::produtoToResponse)
-                .collect(Collectors.toList());
     }
 
     // Page, Pageable
@@ -63,15 +52,16 @@ public class ProdutoService {
 
     /*
     // Exemplo usando for em vez de stream
-    public List<ProdutoRequest> read(){
+    public List<ProdutoResponse> read() {
         List<Produto> produtos = produtoRepository.findAll();
-        List<ProdutoResponse> produtoResponse = new ArrayList<>();
-        for (Produto produto : produtos){
-            produtoResponse.add(produtoMapper.produtoToResponse(produto));
+        List<ProdutoResponse> produtosResponse = new ArrayList<>();
+        for (Produto produto : produtos) {
+            produtosResponse.add(produtoMapper.produtoToResponse(produto));
         }
-        return produtoResponse;
-     }
+        return produtosResponse;
+    }
      */
+
     public Produto update(Produto produto) {
         return produtoRepository.save(produto);
     }
